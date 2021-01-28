@@ -22,6 +22,13 @@ namespace SupermarketAPI.Context
             builder.Entity<Category>().Property(p => p.Name).IsRequired().HasMaxLength(30);
             builder.Entity<Category>().HasMany(p => p.Products).WithOne(p => p.Category).HasForeignKey(p => p.CategoryId);
 
+            //to test endpoints later
+            builder.Entity<Category>().HasData
+            (
+                new Category { _id = 100, Name = "Fruits and Vegetables" },
+                new Category { _id = 101, Name = "Dairy" }
+            );
+
             builder.Entity<Products>().ToTable("Products");
             builder.Entity<Products>().HasKey(p => p._id);
             builder.Entity<Products>().Property(p => p._id).IsRequired().ValueGeneratedOnAdd();

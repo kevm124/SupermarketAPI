@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using SupermarketAPI.Models;
 
-namespace SupermarketAPI.Services
+namespace SupermarketAPI.Repositories
 {
-    public interface ICategoryService
+    public interface ICategoryRespository
     {
         Task<IEnumerable<Category>> ListAsync();
     }
