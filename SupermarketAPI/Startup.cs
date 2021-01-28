@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SupermarketAPI.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace SupermarketAPI
 {
@@ -32,6 +34,8 @@ namespace SupermarketAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SupermarketAPI", Version = "v1" });
             });*/
+
+            services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Supermarket-in-mem"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
