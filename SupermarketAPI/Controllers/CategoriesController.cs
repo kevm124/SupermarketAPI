@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using SupermarketAPI.Context;
 using SupermarketAPI.Models;
 using SupermarketAPI.Services;
+using SupermarketAPI.Resources;
+using AutoMapper;
 
 namespace SupermarketAPI.Controllers
 {
@@ -16,18 +18,21 @@ namespace SupermarketAPI.Controllers
     public class CategoriesController : Controller
     {
         private readonly ICategoryService _categoryService;
+        private readonly IMapper _mapper;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoryService categoryService, IMapper mapper)
         {
             _categoryService = categoryService;
+            _mapper = mapper;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<IEnumerable<Category>> GetAllAsync()
+        public async Task<IEnumerable<CategoryResource>> GetAllAsync()
         {
             var categories = await _categoryService.ListAsync();
-            return categories;
+            var resouces = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(categories);
+            return resouces;
         }
     }
 }
