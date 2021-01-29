@@ -13,6 +13,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using SupermarketAPI.Context;
 using Microsoft.EntityFrameworkCore;
+using SupermarketAPI.Repositories;
+using SupermarketAPI.Services;
 
 namespace SupermarketAPI
 {
@@ -36,6 +38,8 @@ namespace SupermarketAPI
             });*/
 
             services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Supermarket-in-mem"));
+            services.AddScoped<ICategoryRespository, CategoryRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
