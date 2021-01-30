@@ -42,7 +42,7 @@ namespace SupermarketAPI
             services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Supermarket-in-mem"));
             services.AddScoped<ICategoryRespository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddAutoMapper(typeof(ModelToResouceProfile));
+            services.AddAutoMapper(typeof(ModelToResouceProfile), typeof(ResourceToModelProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
