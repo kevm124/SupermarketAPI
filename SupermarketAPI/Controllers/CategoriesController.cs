@@ -9,6 +9,7 @@ using SupermarketAPI.Context;
 using SupermarketAPI.Models;
 using SupermarketAPI.Services;
 using SupermarketAPI.Resources;
+using SupermarketAPI.Extension;
 using AutoMapper;
 
 namespace SupermarketAPI.Controllers
@@ -39,7 +40,10 @@ namespace SupermarketAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] SaveCategoryResource resource)
         {
-
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
         }
     }
 }
