@@ -34,5 +34,12 @@ namespace SupermarketAPI.Controllers
             var resouces = _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(categories);
             return resouces;
         }
+
+        // POST: api/Categories
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] SaveCategoryResource resource)
+        {
+
+        }
     }
 }

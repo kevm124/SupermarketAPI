@@ -15,6 +15,7 @@ using SupermarketAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using SupermarketAPI.Repositories;
 using SupermarketAPI.Services;
+using SupermarketAPI.Mapping;
 using AutoMapper;
 
 namespace SupermarketAPI
@@ -41,7 +42,7 @@ namespace SupermarketAPI
             services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("Supermarket-in-mem"));
             services.AddScoped<ICategoryRespository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
-            services.AddAutoMapper(typeof(Source));
+            services.AddAutoMapper(typeof(ModelToResouceProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,10 +66,5 @@ namespace SupermarketAPI
                 endpoints.MapControllers();
             });
         }
-    }
-
-    public class Source
-    {
-
     }
 }
