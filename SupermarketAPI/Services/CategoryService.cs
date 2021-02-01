@@ -35,7 +35,31 @@ namespace SupermarketAPI.Services
             }
             catch(Exception e)
             {
-                return new SaveCategoryResponse($"An error eccured when saving the category: {e.Message}");
+                return new SaveCategoryResponse($"An error occured when saving the category: {e.Message}");
+            }
+        }
+
+        public async Task<SaveCategoryResponse> UpdateAsync(int id, Category category)
+        {
+            var existingCatagory = await _categoryRespository.FindByIdAsync(id);
+
+            if(existingCatagory == null)
+            {
+                return new SaveCategoryResponse("Category not found");
+            }
+
+            existingCatagory.Name = category.Name;
+
+            try
+            {
+                _categoryRespository.Update(existingCatagory);
+                await _unitofWork.CompleteAsyc();
+
+                return new SaveCategoryResponse(existingCatagory);
+            }
+            catch(Exception e)
+            {
+                return new SaveCategoryResponse($"An error occured when updating the category: {e.Message}");
             }
         }
     }
