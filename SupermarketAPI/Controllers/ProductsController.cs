@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SupermarketAPI.Context;
 using SupermarketAPI.Models;
+using SupermarketAPI.Services;
+using SupermarketAPI.Resources;
+using AutoMapper;
 
 namespace SupermarketAPI.Controllers
 {
@@ -14,25 +17,30 @@ namespace SupermarketAPI.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IProductService _productService;
+        private readonly IMapper _mapper;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(IProductService productService, IMapper mapper)
         {
-            _context = context;
+            _productService = productService;
+            _mapper = mapper;
         }
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Products>>> GetProducts()
+        public async Task<IEnumerable<ProductResource>> ListAsync()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _productService.ListAsync();
+            var resources = _mapper.Map<IEnumerable<Products>, IEnumerable<ProductResource>>(products);
+            return resources;
         }
+        /*
 
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Products>> GetProducts(int id)
         {
-            var products = await _context.Products.FindAsync(id);
+            var products = await _productService.FindAsync(id);
 
             if (products == null)
             {
@@ -78,7 +86,7 @@ namespace SupermarketAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Products>> PostProducts(Products products)
         {
-            _context.Products.Add(products);
+            _productService.Add(products);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProducts", new { id = products._id }, products);
@@ -88,13 +96,13 @@ namespace SupermarketAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProducts(int id)
         {
-            var products = await _context.Products.FindAsync(id);
+            var products = await _productService.FindAsync(id);
             if (products == null)
             {
                 return NotFound();
             }
 
-            _context.Products.Remove(products);
+            _productService.Remove(products);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +110,7 @@ namespace SupermarketAPI.Controllers
 
         private bool ProductsExists(int id)
         {
-            return _context.Products.Any(e => e._id == id);
-        }
+            return _productService.Any(e => e._id == id);
+        }*/
     }
 }

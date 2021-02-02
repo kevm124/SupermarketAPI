@@ -35,6 +35,27 @@ namespace SupermarketAPI.Context
             builder.Entity<Products>().Property(p => p.Name).IsRequired().HasMaxLength(30);
             builder.Entity<Products>().Property(p => p.QuantityInPackage).IsRequired();
             builder.Entity<Products>().Property(p => p.UnitOfMeasurement).IsRequired();
+
+            //to test endpoints later
+            builder.Entity<Products>().HasData
+            (
+                new Products
+                {
+                    _id = 100,
+                    Name = "Apple",
+                    QuantityInPackage = 1,
+                    UnitOfMeasurement = EUnitOfMeasurement.Unity,
+                    CategoryId = 100
+                },
+                new Products
+                {
+                    _id = 101,
+                    Name = "Milk",
+                    QuantityInPackage = 2,
+                    UnitOfMeasurement = EUnitOfMeasurement.Liter,
+                    CategoryId = 101,
+                }
+            );
         }
     }
 }
