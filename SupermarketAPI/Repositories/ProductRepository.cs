@@ -14,9 +14,29 @@ namespace SupermarketAPI.Repositories
         {
         }
 
+        public async Task AddAsync(Products product)
+        {
+            await _context.Products.AddAsync(product);
+        }
+
+        public async Task<Products> FindByIdAsync(int id)
+        {
+            return await _context.Products.FindAsync(id);
+        }
+
         public async Task<IEnumerable<Products>> ListAsync()
         {
             return await _context.Products.Include(p => p.Category).ToListAsync();
+        }
+
+        public void Remove(Products product)
+        {
+            _context.Products.Remove(product);
+        }
+
+        public void Update(Products product)
+        {
+            _context.Products.Update(product);
         }
     }
 }
