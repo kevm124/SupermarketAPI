@@ -14,5 +14,7 @@ namespace SupermarketAPI.Resources
 
         [Required]
         public EUnitOfMeasurement unitOfMeasurement { get; set; }
+
+        public int CategoryId { get; set; }
     }
 }

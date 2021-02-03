@@ -53,7 +53,7 @@ namespace SupermarketAPI.Context
                     Name = "Milk",
                     QuantityInPackage = 2,
                     UnitOfMeasurement = EUnitOfMeasurement.Liter,
-                    CategoryId = 101,
+                    CategoryId = 101
                 }
             );
         }

@@ -9,6 +9,7 @@ using SupermarketAPI.Context;
 using SupermarketAPI.Models;
 using SupermarketAPI.Services;
 using SupermarketAPI.Resources;
+using SupermarketAPI.Extension;
 using AutoMapper;
 
 namespace SupermarketAPI.Controllers
@@ -34,83 +35,62 @@ namespace SupermarketAPI.Controllers
             var resources = _mapper.Map<IEnumerable<Products>, IEnumerable<ProductResource>>(products);
             return resources;
         }
-        /*
-
-        // GET: api/Products/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Products>> GetProducts(int id)
-        {
-            var products = await _productService.FindAsync(id);
-
-            if (products == null)
-            {
-                return NotFound();
-            }
-
-            return products;
-        }
 
         // PUT: api/Products/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProducts(int id, Products products)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveProductResource resource)
         {
-            if (id != products._id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState.GetErrorMessages());
             }
 
-            _context.Entry(products).State = EntityState.Modified;
+            var product = _mapper.Map<SaveProductResource, Products>(resource);
+            var result = await _productService.UpdateAsync(id, product);
 
-            try
+            if (!result.Success)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(result.Message);
             }
 
-            return NoContent();
+            var productResource = _mapper.Map<Products, ProductResource>(result.Product);
+            return Ok(productResource);
         }
 
         // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Products>> PostProducts(Products products)
+        public async Task<IActionResult> PostAsync([FromBody] SaveProductResource resource)
         {
-            _productService.Add(products);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
 
-            return CreatedAtAction("GetProducts", new { id = products._id }, products);
+            var product = _mapper.Map<SaveProductResource, Products>(resource);
+            var result = await _productService.SaveAsync(product);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            var productResource = _mapper.Map<Products, ProductResource>(result.Product);
+            return Ok(productResource);
         }
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProducts(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            var products = await _productService.FindAsync(id);
-            if (products == null)
+            var result = await _productService.DeleteAsync(id);
+
+            if (!result.Success)
             {
-                return NotFound();
+                return BadRequest(result.Message);
             }
 
-            _productService.Remove(products);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var productResource = _mapper.Map<Products, ProductResource>(result.Product);
+            return Ok(productResource);
         }
-
-        private bool ProductsExists(int id)
-        {
-            return _productService.Any(e => e._id == id);
-        }*/
     }
 }
